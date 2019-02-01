@@ -79,12 +79,12 @@ public class AppTest
         assertEquals(101,(int)t1[3][1]);
         assertEquals(232,(int)t1[3][2]);
     }
-    public static void testHandler(){
+    public static void testTheMap(){
         Map<String,String> m = new HashMap<String,String>();
         m.put("names","Zumrut\nSevval");
         m.put("luckyNumbers","10\n13");
         m.put("hcodesPercent","89");
         m.put("luckyNumberPercent","11");
-        App.handler(m);
+        App.theMap(m);
     }
 }
