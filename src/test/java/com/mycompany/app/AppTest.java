@@ -5,7 +5,8 @@ import java.util.Arrays;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Unit test for simple App.
  */
@@ -61,7 +62,7 @@ public class AppTest
         Integer[] h={"Zumrut".hashCode(),"Sevval".hashCode(),"Rabia".hashCode(),"Fatma".hashCode()};
         Integer[] l={9, 4, 6, 3};
         Integer[][] t1=App.colors(h,l,86,14);
-        
+
         assertEquals(132,(int)t1[0][0]);
         assertEquals(120,(int)t1[0][1]);
         assertEquals(140,(int)t1[0][2]);
@@ -77,5 +78,13 @@ public class AppTest
         assertEquals(107,(int)t1[3][0]);
         assertEquals(101,(int)t1[3][1]);
         assertEquals(232,(int)t1[3][2]);
+    }
+    public static void testHandler(){
+        Map<String,String> m = new HashMap<String,String>();
+        m.put("names","Zumrut\nSevval");
+        m.put("luckyNumbers","10\n13");
+        m.put("hcodesPercent","89");
+        m.put("luckyNumberPercent","11");
+        App.handler(m);
     }
 }

@@ -30,6 +30,40 @@ public class App
       }
       return result;
     }
+    public static Map handler(Map<String,String> params){
+      String names = params.get("names");
+      java.util.Scanner sc1 = new java.util.Scanner(names);
+      sc1.useDelimiter("[;\r\n]+");
+      java.util.ArrayList<Integer> hcodesList = new java.util.ArrayList<>();
+      java.util.ArrayList<String> nameList = new java.util.ArrayList<>();
+      while (sc1.hasNext())
+      {
+        String name=sc1.next();
+        nameList.add(name);
+        hcodesList.add(name.hashCode());
+      }
+
+      String luckyNumbers = params.get("luckyNumbers");
+      java.util.Scanner sc2 = new java.util.Scanner(luckyNumbers);
+      sc2.useDelimiter("[;\r\n]+");
+      java.util.ArrayList<Integer> luckyNumberList = new java.util.ArrayList<>();
+      while (sc2.hasNext())
+      {
+        int value = Integer.parseInt(sc2.next().replaceAll("\\s",""));
+        luckyNumberList.add(value);
+      }
+      int hcodesPercent=Integer.parseInt(params.get("hcodesPercent").replaceAll("\\s",""));
+      int luckyNumberPercent=Integer.parseInt(params.get("luckyNumberPercent").replaceAll("\\s",""));
+
+      Map map = new HashMap();
+      Integer[][] colors=App.colors(hcodesList.toArray(new Integer[hcodesList.size()]),luckyNumberList.toArray(new Integer[luckyNumberList.size()]),hcodesPercent,luckyNumberPercent);
+      if(colors==null)
+        map.put("result","Wrong format...");
+      else
+        map.put("result", colors);
+      System.out.println(map.get("result"));
+      return map;
+    }
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
 
