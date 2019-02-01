@@ -13,16 +13,23 @@ import spark.template.mustache.MustacheTemplateEngine;
 
 public class App
 {
-    public static boolean search(ArrayList<Integer> array, int e) {
-      System.out.println("inside search");
-      if (array == null) return false;
-
-      for (int elt : array) {
-        if (elt == e) return true;
-      }
-      return false;
+    public static Integer[] nameToColor(int num){
+      Integer[] color=new Integer[3];
+      color[0]=((num<<24)>>24)&0xff;   //the least significiant 8-bit
+      color[1]=((num<<16)>>24)&0xff;
+      color[2]=((num<<8)>>24)&0xff;
+      return color;
     }
-
+    public static Integer[][] colors(Integer[] hcodes, Integer[] luckyNumber, int hcodesPercent, int luckyNumberPercent){
+      if(hcodes==null || luckyNumber==null || hcodes.length!=luckyNumber.length || ((hcodesPercent+luckyNumberPercent)!=100) || hcodesPercent<0 || luckyNumberPercent<0)
+        return null;
+      
+      Integer[][] result=new Integer[hcodes.length][3];
+      for(int j=0; j<hcodes.length; j++){
+        result[j]=nameToColor((hcodes[j]*hcodesPercent/100)+(luckyNumber[j]*luckyNumberPercent/100));
+      }
+      return result;
+    }
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
 
@@ -32,25 +39,36 @@ public class App
           //System.out.println(req.queryParams("input1"));
           //System.out.println(req.queryParams("input2"));
 
-          String input1 = req.queryParams("input1");
-          java.util.Scanner sc1 = new java.util.Scanner(input1);
+          String names = req.queryParams("names");
+          java.util.Scanner sc1 = new java.util.Scanner(names);
           sc1.useDelimiter("[;\r\n]+");
-          java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+          java.util.ArrayList<Integer> hcodesList = new java.util.ArrayList<>();
+          java.util.ArrayList<String> nameList = new java.util.ArrayList<>();
           while (sc1.hasNext())
           {
-            int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
-            inputList.add(value);
+            String name=sc1.next();
+            nameList.add(name);
+            hcodesList.add(name.hashCode());
           }
-          System.out.println(inputList);
 
+          String luckyNumbers = req.queryParams("luckyNumbers");
+          java.util.Scanner sc2 = new java.util.Scanner(luckyNumbers);
+          sc2.useDelimiter("[;\r\n]+");
+          java.util.ArrayList<Integer> luckyNumberList = new java.util.ArrayList<>();
+          while (sc2.hasNext())
+          {
+            int value = Integer.parseInt(sc2.next().replaceAll("\\s",""));
+            luckyNumberList.add(value);
+          }
+          int hcodesPercent=Integer.parseInt(req.queryParams("hcodesPercent").replaceAll("\\s",""));
+          int luckyNumberPercent=Integer.parseInt(req.queryParams("luckyNumberPercent").replaceAll("\\s",""));
 
-          String input2 = req.queryParams("input2").replaceAll("\\s","");
-          int input2AsInt = Integer.parseInt(input2);
-
-          boolean result = App.search(inputList, input2AsInt);
-
-         Map map = new HashMap();
-          map.put("result", result);
+          Map map = new HashMap();
+          Integer[][] colors=App.colors((Integer[])hcodesList.toArray(),(Integer[])luckyNumberList.toArray(),hcodesPercent,luckyNumberPercent);
+          if(colors==null)
+            map.put("result","Wrong format...");
+          else
+            map.put("result", colors);
           return new ModelAndView(map, "compute.mustache");
         }, new MustacheTemplateEngine());
 
