@@ -38,9 +38,11 @@ public class App
       java.util.ArrayList<String> nameList = new java.util.ArrayList<>();
       while (sc1.hasNext())
       {
-        String name=sc1.next();
-        nameList.add(name);
-        hcodesList.add(name.hashCode());
+        String name=sc1.next().trim();
+        if(name.replaceAll("(\\s+)","").length()>0){
+          nameList.add(name);
+          hcodesList.add(name.hashCode());
+        }
       }
 
       String luckyNumbers = params.get("luckyNumbers");
@@ -49,8 +51,12 @@ public class App
       java.util.ArrayList<Integer> luckyNumberList = new java.util.ArrayList<>();
       while (sc2.hasNext())
       {
-        int value = Integer.parseInt(sc2.next().replaceAll("\\s",""));
-        luckyNumberList.add(value);
+        try{
+          int value = Integer.parseInt(sc2.next().replaceAll("\\s",""));
+          luckyNumberList.add(value);
+        }catch(NumberFormatException e){
+
+        }
       }
       int hcodesPercent=Integer.parseInt(params.get("hcodesPercent").replaceAll("\\s",""));
       int luckyNumberPercent=Integer.parseInt(params.get("luckyNumberPercent").replaceAll("\\s",""));
