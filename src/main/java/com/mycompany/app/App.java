@@ -58,7 +58,7 @@ public class App
       Map map = new HashMap();
       Integer[][] colors=App.colors(hcodesList.toArray(new Integer[hcodesList.size()]),luckyNumberList.toArray(new Integer[luckyNumberList.size()]),hcodesPercent,luckyNumberPercent);
       if(colors==null)
-        map.put("result","Wrong format...");
+        map.put("result","<b>Wrong format...</b>");
       else
         map.put("result", colors);
       System.out.println(map.get("result"));
