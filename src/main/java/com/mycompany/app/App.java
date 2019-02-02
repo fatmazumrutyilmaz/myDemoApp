@@ -59,8 +59,17 @@ public class App
       Integer[][] colors=App.colors(hcodesList.toArray(new Integer[hcodesList.size()]),luckyNumberList.toArray(new Integer[luckyNumberList.size()]),hcodesPercent,luckyNumberPercent);
       if(colors==null)
         map.put("result","<b>Wrong format...</b>");
-      else
-        map.put("result", colors);
+      else{
+        String s="";
+        for(int i=0; i<colors.length; i++){
+          s+="<div class=\"row\">"+
+              "<div class=\"box\">"+nameList.get(i)+"</div>"+
+              "<div class=\"box\">"+luckyNumberList.get(i)+"</div>"+
+              "<div class=\"box\"><div class=\"colorbox\" style=\"background:rgb("+colors[i][0]+","+colors[i][1]+","+colors[i][2]+");\"></div></div>"+
+              "</div>";
+        }
+        map.put("result", s);
+      }
       System.out.println(map.get("result"));
       return map;
     }

@@ -1,6 +1,26 @@
 <title>My color app</title>  <h1>Find your color!</h1>
     {{{result}}}
 
+<style>
+    .row{
+        margin-bottom:10px;
+        float:left;
+        width:100%;
+    }
+    .box{
+        width:30%;
+        float:left;
+        margin-left:5%;
+    }
+    .box:first-child{
+        margin-left:0;
+    }
+    .colorbox{
+        width:40px;
+        height:40px;
+        border:1px solid black;
+    }
+</style>
 
   <form action="compute" method="post">
         <textarea name="names" rows="10" cols="30"></textarea>
